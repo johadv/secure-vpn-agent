@@ -26,3 +26,8 @@
 ## Vaihe 2 (laajennus) — portit ja levytila
 - Lisätty: 2026-06-27
 - Opin: scanCommonPorts tarkistaa AINOASTAAN omaa konetta (127.0.0.1), ei koskaan muita IP-osoitteita - tämä on tietoinen turvallisuussuunnittelu, ei vahinko. Muiden koneiden porttien skannaaminen luvatta olisi epäeettistä/laitonta, joten osoite on kovakoodattu vakioksi sen sijaan että se olisi muutettavissa parametrina. Käytetty rajattua listaa yleisistä porteista (SSH, HTTP/HTTPS, tietokannat) sen sijaan että skannattaisiin koko 1-65535 porttiavaruutta. syscall.Statfs antaa levytilatiedot suoraan käyttöjärjestelmältä, sama tieto jota "df"-komento käyttää. Testattu Macilla: löysi PostgreSQL:n (5432) paikallisesti auki olevana porttina.
+
+## Vaihe 4 — CI/CD-putki (build, test, vet)
+- Aloitettu: 2026-06-27
+- Valmis: 2026-06-27
+- Opin: GitHub Actions -workflow (.github/workflows/ci.yml) ajaa automaattisesti go build, go test ja go vet jokaisella pushilla main-haaraan. defaults/working-directory välttää toistuvan "cd agent" joka komennossa. setup-go:n riippuvuuscache vaatii go.sum-tiedoston - projektilla ei ole ulkoisia riippuvuuksia (vain stdlib), niin cache-varoitus on harmiton. Ensimmäinen workflow-ajo onnistui (success).
