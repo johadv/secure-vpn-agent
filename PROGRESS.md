@@ -35,3 +35,7 @@
 ## Vaihe 4 (laajennus) — SAST (CodeQL)
 - Lisätty: 2026-06-27
 - Opin: CodeQL-koodiskannaus on ilmainen vain JULKISILLE repoille GitHub Free/Pro-tileillä - privaateissa repoissa se vaatii GitHub Code Security -lisenssin (Team/Enterprise). Muutin repon julkiseksi tämän takia. Workflow permissions piti olla "Read and write" CodeQL:n security-events-kirjoitusoikeutta varten (vaikka tämä ei itsessään ratkaisi alkuperäistä "repository not found" -virhettä - syy oli CodeQL+privaatti repo -yhdistelmä). Molemmat jobit (build-and-test, sast) menevät nyt läpi, tulokset näkyvät GitHubin Security-välilehdellä.
+
+## Vaihe 4 valmis — koko CI/CD-putki pystyssä
+- Valmis: 2026-06-27
+- Yhteenveto: build+test+vet, CodeQL (SAST), Trivy (SCA), Dependabot - kaikki toimivat GitHubin Actions-välilehdellä. Repo julkinen.
