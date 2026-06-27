@@ -1,0 +1,50 @@
+name: CI
+
+# "on" määrittää milloin tämä workflow käynnistyy automaattisesti:
+# - aina kun pushaat main-haaraan
+# - aina kun avaat tai päivität pull requestin (mitä tahansa haaraa vasten)
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # build-and-test kääntää koodin ja ajaa testit - tämä on perus-CI:n
+  # ydin, jonka pitäisi aina olla vihreä ennen kuin koodia mergetään.
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # defaults/working-directory tarkoittaa, että kaikki tämän jobin
+    # "run"-komennot ajetaan automaattisesti agent/-kansiossa, ilman
+    # että joutuu kirjoittamaan "cd agent &&" joka komentoon erikseen.
+    defaults:
+      run:
+        working-directory: agent
+
+    steps:
+      # checkout hakee repon sisällön GitHub Actionsin omalle koneelle -
+      # ilman tätä askelta workflow ei näkisi yhtään tiedostoa.
+      - uses: actions/checkout@v4
+
+      # setup-go asentaa Go:n täsmälleen siihen versioon jota projekti
+      # käyttää - sama versio kuin go.mod:issa.
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+
+      # go build kääntää koodin - jos jossain on syntaksivirhe tai
+      # puuttuva riippuvuus, tämä epäonnistuu ja koko workflow näytetään
+      # punaisena GitHubissa.
+      - name: Build
+        run: go build -v ./...
+
+      # go test ajaa kaikki _test.go-tiedostot. -v näyttää yksittäisten
+      # testien nimet lokissa, helpottaa virheen paikantamista.
+      - name: Test
+        run: go test -v ./...
+
+      # go vet etsii epäilyttäviä koodirakenteita jotka kääntyvät kyllä,
+      # mutta ovat todennäköisesti virheitä (esim. väärä Printf-formaatti).
+      - name: Vet
+        run: go vet ./...
