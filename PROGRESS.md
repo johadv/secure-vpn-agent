@@ -31,3 +31,7 @@
 - Aloitettu: 2026-06-27
 - Valmis: 2026-06-27
 - Opin: GitHub Actions -workflow (.github/workflows/ci.yml) ajaa automaattisesti go build, go test ja go vet jokaisella pushilla main-haaraan. defaults/working-directory välttää toistuvan "cd agent" joka komennossa. setup-go:n riippuvuuscache vaatii go.sum-tiedoston - projektilla ei ole ulkoisia riippuvuuksia (vain stdlib), niin cache-varoitus on harmiton. Ensimmäinen workflow-ajo onnistui (success).
+
+## Vaihe 4 (laajennus) — SAST (CodeQL)
+- Lisätty: 2026-06-27
+- Opin: CodeQL-koodiskannaus on ilmainen vain JULKISILLE repoille GitHub Free/Pro-tileillä - privaateissa repoissa se vaatii GitHub Code Security -lisenssin (Team/Enterprise). Muutin repon julkiseksi tämän takia. Workflow permissions piti olla "Read and write" CodeQL:n security-events-kirjoitusoikeutta varten (vaikka tämä ei itsessään ratkaisi alkuperäistä "repository not found" -virhettä - syy oli CodeQL+privaatti repo -yhdistelmä). Molemmat jobit (build-and-test, sast) menevät nyt läpi, tulokset näkyvät GitHubin Security-välilehdellä.
