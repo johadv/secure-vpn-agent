@@ -10,3 +10,10 @@
 - Aloitettu: 2026-06-27
 - Valmis: 2026-06-27
 - Opin: UTM:n ARM64-VM vaatii arm64-ISO:n (ei amd64), UEFI Shell -kiertotien tarvittaessa, asennus saattaa kaatua satunnaisesti kernel/grub-paketin kohdalla mutta onnistuu uudelleenyrityksellä. node-a IP: 192.168.64.11
+
+## Vaihe 1 — node-a pystyssä, node-b kesken
+- Aloitettu: 2026-06-27
+- Valmis (node-a): 2026-06-27
+- node-a IP: 192.168.64.11, käyttäjätunnus: joni
+- Opin: UTM:n ARM64-VM vaatii arm64-ISO:n (ei amd64); asennus voi kaatua satunnaisesti grub/kernel-paketin kohdalla, mutta toimii uudelleenyrityksellä; UEFI Shell -kiertotie tarpeen jos boot ei löydä ISO:a automaattisesti
+- TODO seuraavaksi: node-b asennus (levytila/RAM loppui Macilta, harkittava pienempää levykokoa VM:lle tai VPS:ää node-b:n tilalle), sitten SSH-avainsiirtymä molemmille, sitten itse WireGuard-tunneli
