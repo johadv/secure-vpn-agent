@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Tarkistaa agent/-kansion Go-riippuvuudet viikoittain ja avaa
+  # automaattisesti pull requestin jos uudempi/turvallisempi versio löytyy.
+  - package-ecosystem: "gomod"
+    directory: "/agent"
+    schedule:
+      interval: "weekly"
+
+  # Tarkistaa myös itse GitHub Actions -workflowt (esim. actions/checkout
+  # -version) - hyvä käytäntö, koska vanhentuneissa actioneissa on
+  # toisinaan tietoturva-aukkoja.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

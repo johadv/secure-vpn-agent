@@ -83,3 +83,28 @@ jobs:
       # GitHubin Security-välilehdelle.
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+
+
+        # sca-job ajaa Trivyn - skannaa projektin riippuvuudet (go.mod/go.sum)
+  # tunnettujen CVE-haavoittuvuuksien varalta. Tällä hetkellä projektilla
+  # ei ole ulkoisia riippuvuuksia, niin tämä job toimii lähinnä
+  # "valmiina odottamassa" kun Vaihe 3:ssa lisätään mahdollisesti paketteja.
+  sca:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # trivy-action skannaa annetun polun. scan-type "fs" tarkoittaa
+      # tiedostojärjestelmäskannausta (ei Docker-image-skannausta).
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './agent'
+          format: 'table'
+          # exit-code 1 tarkoittaa: jos löytyy CRITICAL/HIGH-haavoittuvuus,
+          # job epäonnistuu (punainen) - tämä on tarkoituksella tiukka,
+          # jotta haavoittuvia riippuvuuksia ei vahingossa jää huomaamatta.
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
