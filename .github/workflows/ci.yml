@@ -48,3 +48,38 @@ jobs:
       # mutta ovat todennäköisesti virheitä (esim. väärä Printf-formaatti).
       - name: Vet
         run: go vet ./...
+
+  # sast-job ajaa CodeQL:n - GitHubin omistaman, ilmaisen staattisen
+  # analyysityökalun joka skannaa koodin tunnettujen haavoittuvuus-
+  # mallien varalta (esim. SQL-injektiot, kovakoodatut salaisuudet,
+  # puuttuva input-validointi). Tämä on erillinen job samassa
+  # tiedostossa - ajetaan rinnakkain build-and-test-jobin kanssa.
+  sast:
+    runs-on: ubuntu-latest
+
+    # permissions/security-events on PAKOLLINEN CodeQL:lle - se kertoo
+    # GitHubille että tämä workflow saa kirjoittaa löydökset Security-
+    # välilehdelle. Oletuksena workflow-tokenilla EI ole tätä oikeutta,
+    # niin tämä rivi täytyy lisätä erikseen.
+    permissions:
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # init valmistelee CodeQL-analyysin valitulle kielelle (go).
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: go
+
+      # autobuild yrittää kääntää koodin automaattisesti - CodeQL
+      # tarvitsee onnistuneen käännöksen nähdäkseen koodin rakenteen
+      # tarkasti, ei vain lukea tiedostoja tekstina.
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      # analyze ajaa varsinaisen skannauksen ja lähettää tulokset
+      # GitHubin Security-välilehdelle.
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
