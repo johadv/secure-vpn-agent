@@ -1,0 +1,5 @@
+*.key
+/agent/agent-bin
+/server/server-bin
+certs/
+node_modules/
