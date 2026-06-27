@@ -24,7 +24,7 @@ jobs:
     steps:
       # checkout hakee repon sisällön GitHub Actionsin omalle koneelle -
       # ilman tätä askelta workflow ei näkisi yhtään tiedostoa.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # setup-go asentaa Go:n täsmälleen siihen versioon jota projekti
       # käyttää - sama versio kuin go.mod:issa.
@@ -65,7 +65,7 @@ jobs:
       security-events: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # init valmistelee CodeQL-analyysin valitulle kielelle (go).
       - name: Initialize CodeQL
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # trivy-action skannaa annetun polun. scan-type "fs" tarkoittaa
       # tiedostojärjestelmäskannausta (ei Docker-image-skannausta).
