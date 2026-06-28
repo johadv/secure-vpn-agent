@@ -45,3 +45,9 @@
 - Valmis (paikallinen testaus): 2026-06-28
 - Opin: Nykyaikaiset TLS-kirjastot (Go mukaan lukien) eivät enää luota sertifikaatin CN-kenttään osoitteen validoinnissa - SAN (Subject Alternative Name) -kenttä on pakollinen. Ensimmäinen sertifikaattigenerointi epäonnistui juuri tästä syystä ("doesn't contain any IP SANs"), korjattu lisäämällä -extfile openssl-komentoon. mTLS-yhteys toimii molempiin suuntiin: palvelin vaatii ja varmistaa client-sertifikaatin (RequireAndVerifyClientCert), client varmistaa palvelimen sertifikaatin CA:ta vasten. Testattu onnistuneesti: agentti lähetti JSON-snapshotin palvelimelle TLS 1.3:n yli, palvelin tunnisti clientin CN:n (node-agent).
 - Seuraava: viedä tämä node-a/node-b-väliseksi WireGuard-tunnelin yli kun node-b on asennettu
+
+## Vaihe 3 (laajennus) — mTLS-turvatestit
+- Testattu: 2026-06-28
+- Testi 1: yhteys ilman client-sertifikaattia -> palvelin hylkäsi (TLS alert: certificate required)
+- Testi 2: yhteys CA:n allekirjoittamattomalla, itse luodulla sertifikaatilla -> palvelin hylkäsi (TLS alert: unknown ca)
+- Opin: RequireAndVerifyClientCert tarkistaa kahdessa vaiheessa - ensin ETTÄ sertifikaatti esitetään ylipäätään, sitten KUKA sen on allekirjoittanut. Kahden testin avulla todistettu molemmat suojakerrokset toimivat erikseen. Tämä on konkreettinen, esittelykelpoinen todiste mTLS:n toimivuudesta CV:tä/haastattelua varten.
