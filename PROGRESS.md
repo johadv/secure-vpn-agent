@@ -39,3 +39,9 @@
 ## Vaihe 4 valmis — koko CI/CD-putki pystyssä
 - Valmis: 2026-06-27
 - Yhteenveto: build+test+vet, CodeQL (SAST), Trivy (SCA), Dependabot - kaikki toimivat GitHubin Actions-välilehdellä. Repo julkinen.
+
+## Vaihe 3 — mTLS toimii paikallisesti (Macilla, server+agent samalla koneella)
+- Aloitettu: 2026-06-28
+- Valmis (paikallinen testaus): 2026-06-28
+- Opin: Nykyaikaiset TLS-kirjastot (Go mukaan lukien) eivät enää luota sertifikaatin CN-kenttään osoitteen validoinnissa - SAN (Subject Alternative Name) -kenttä on pakollinen. Ensimmäinen sertifikaattigenerointi epäonnistui juuri tästä syystä ("doesn't contain any IP SANs"), korjattu lisäämällä -extfile openssl-komentoon. mTLS-yhteys toimii molempiin suuntiin: palvelin vaatii ja varmistaa client-sertifikaatin (RequireAndVerifyClientCert), client varmistaa palvelimen sertifikaatin CA:ta vasten. Testattu onnistuneesti: agentti lähetti JSON-snapshotin palvelimelle TLS 1.3:n yli, palvelin tunnisti clientin CN:n (node-agent).
+- Seuraava: viedä tämä node-a/node-b-väliseksi WireGuard-tunnelin yli kun node-b on asennettu
