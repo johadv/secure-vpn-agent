@@ -64,3 +64,10 @@
 - node-b: 10.10.0.1 (WireGuard-sisäinen), 192.168.64.17 (LAN), kuuntelee porttia 51820
 - Opin: apt-asennus saattoi epäonnistua UTM:n virtuaaliverkossa IPv6-reitityksen takia ("Network is unreachable") - korjattu pakottamalla apt käyttämään IPv4:ää (-o Acquire::ForceIPv4=true). Avainten generointi täytyy tehdä juuri /etc/wireguard-kansiossa rootina, muuten Permission denied. wg-quick up wg0 tekee neljä asiaa automaattisesti: luo virtuaalisen verkkokortin, asettaa avaimet, antaa IP-osoitteen, ja nostaa rajapinnan ylös. Tunneli vahvistettu toimivaksi: wg show näyttää "latest handshake" molemmilla koneilla, ping 10.10.0.x onnistui 0% pakettihäviöllä.
 - Seuraava: vie mTLS-yhteys (server+agent) tämän WireGuard-tunnelin sisään, 127.0.0.1-osoitteiden sijaan käytä 10.10.0.1/10.10.0.2
+
+## MERKKIPAALU — koko ketju toimii päästä päähän, node-a -> WireGuard -> mTLS -> node-b
+- Valmis: 2026-06-30
+- node-a agentti lähetti onnistuneesti JSON-snapshotin WireGuard-tunnelin (10.10.0.2 -> 10.10.0.1) läpi, mTLS:n suojaamana, node-b:n palvelimelle.
+- Palvelin vahvisti clientin identiteetin sertifikaatista (CN=node-agent) ja vastaanotti datan onnistuneesti.
+- Tämä todistaa kaikki kolme projektin ydinosaamisaluetta yhdessä: VPN/networking (WireGuard), security-focused application (mTLS-agentti/palvelin), ja nyt myös käytännön integraation - ei vain kolme erillistä osaa vaan yksi toimiva järjestelmä.
+- Opin matkalla: SSH/scp saattaa kokea hetkellisiä "No route to host" -katkoja UTM:n virtuaaliverkossa vaikka ping toimii - kannattaa yrittää uudelleen ennen syvempää debuggausta. PATH-muutokset .profile-tiedostoon eivät periydy automaattisesti uusiin terminaali-istuntoihin samalla käyttäjällä - source ~/.profile tarvitaan tai uusi kirjautuminen. Sertifikaattien siirto eri koneille onnistuu turvallisesti scp:llä suoraan, koska certs/ on aina .gitignoressa eikä koskaan kulje Git-historian kautta.
