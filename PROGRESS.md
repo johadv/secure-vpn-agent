@@ -51,3 +51,9 @@
 - Testi 1: yhteys ilman client-sertifikaattia -> palvelin hylkäsi (TLS alert: certificate required)
 - Testi 2: yhteys CA:n allekirjoittamattomalla, itse luodulla sertifikaatilla -> palvelin hylkäsi (TLS alert: unknown ca)
 - Opin: RequireAndVerifyClientCert tarkistaa kahdessa vaiheessa - ensin ETTÄ sertifikaatti esitetään ylipäätään, sitten KUKA sen on allekirjoittanut. Kahden testin avulla todistettu molemmat suojakerrokset toimivat erikseen. Tämä on konkreettinen, esittelykelpoinen todiste mTLS:n toimivuudesta CV:tä/haastattelua varten.
+
+## Vaihe 1 — node-b asennettu, molemmat näkevät toisensa
+- Valmis: 2026-06-30
+- node-a IP: 192.168.64.11
+- node-b IP: 192.168.64.17
+- Opin: Ubuntu-ISO-latauksissa kannattaa AINA varmistaa SHA256-checksum ennen VM-asennusta - vanha/väärä ISO-versio (26.04 sekoittui 24.04:n kanssa) aiheutti toistuvan asennuskaatumisen joka näytti muistiongelmalta mutta oli oikeasti väärä/vioittunut tiedosto. cdimage.ubuntu.com:n suorat URL:t muuttuvat point release -numeron mukana (24.04 -> 24.04.4) - vanha linkki ilman tarkkaa versionumeroa johtaa 404:ään. Ping-testi ennen WireGuardia kannattaa aina tehdä ensin - varmistaa peruskonnektiviteetti ennen monimutkaisempaa konfiguraatiota.
