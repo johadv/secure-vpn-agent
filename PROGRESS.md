@@ -57,3 +57,10 @@
 - node-a IP: 192.168.64.11
 - node-b IP: 192.168.64.17
 - Opin: Ubuntu-ISO-latauksissa kannattaa AINA varmistaa SHA256-checksum ennen VM-asennusta - vanha/väärä ISO-versio (26.04 sekoittui 24.04:n kanssa) aiheutti toistuvan asennuskaatumisen joka näytti muistiongelmalta mutta oli oikeasti väärä/vioittunut tiedosto. cdimage.ubuntu.com:n suorat URL:t muuttuvat point release -numeron mukana (24.04 -> 24.04.4) - vanha linkki ilman tarkkaa versionumeroa johtaa 404:ään. Ping-testi ennen WireGuardia kannattaa aina tehdä ensin - varmistaa peruskonnektiviteetti ennen monimutkaisempaa konfiguraatiota.
+
+## Vaihe 1 valmis — WireGuard-tunneli toimii node-a ja node-b välillä
+- Valmis: 2026-06-30
+- node-a: 10.10.0.2 (WireGuard-sisäinen), 192.168.64.11 (LAN)
+- node-b: 10.10.0.1 (WireGuard-sisäinen), 192.168.64.17 (LAN), kuuntelee porttia 51820
+- Opin: apt-asennus saattoi epäonnistua UTM:n virtuaaliverkossa IPv6-reitityksen takia ("Network is unreachable") - korjattu pakottamalla apt käyttämään IPv4:ää (-o Acquire::ForceIPv4=true). Avainten generointi täytyy tehdä juuri /etc/wireguard-kansiossa rootina, muuten Permission denied. wg-quick up wg0 tekee neljä asiaa automaattisesti: luo virtuaalisen verkkokortin, asettaa avaimet, antaa IP-osoitteen, ja nostaa rajapinnan ylös. Tunneli vahvistettu toimivaksi: wg show näyttää "latest handshake" molemmilla koneilla, ping 10.10.0.x onnistui 0% pakettihäviöllä.
+- Seuraava: vie mTLS-yhteys (server+agent) tämän WireGuard-tunnelin sisään, 127.0.0.1-osoitteiden sijaan käytä 10.10.0.1/10.10.0.2
