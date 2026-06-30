@@ -43,7 +43,7 @@ func main() {
 	// HUOM: tässä paikallisessa testausvaiheessa osoite on
 	// 127.0.0.1:8443 - kun viedään tämä node-a/node-b-väliseksi,
 	// tämä vaihtuu WireGuard-tunnelin sisäiseen IP-osoitteeseen.
-	err = transport.Send(client, "https://127.0.0.1:8443/ingest", payload)
+	err = transport.Send(client, "https://10.10.0.1:8443/ingest", payload)
 	if err != nil {
 		log.Fatalf("lähetys epäonnistui: %v", err)
 	}
